@@ -21,7 +21,31 @@ pause.addEventListener('click', () => {
 
     }
 });
+window.addEventListener("click",()=>{
+    if (bullet !== 0) {
+            new Audio("audio/duck-shot.mp3").play();
+            let divcontainer = document.getElementById('bull');
+            if (divcontainer.firstChild) {
+                divcontainer.removeChild(divcontainer.firstChild);
+                bullet--;
+            }
+            if (hoveredDuck) {
+                score++;
+                document.getElementById("score").innerText = score * 100 + " score";
+                hoveredDuck.img.src = 'img/1.png';
+                let fallingdownAnimation = hoveredDuck;
+                requestAnimationFrame(() => fallDown(fallingdownAnimation));
+                ducks = ducks.filter(d => d !== hoveredDuck);
+                hoveredDuck = null;
+                if (ducks.length === 0) setTimeout(adddog, 1500);
+            }
+        } else if (bullet <= 0) {
+            console.log('No bullets left!');
+            if (!isOver &&ducks.length)gameover()
+            return
 
+        }
+})
 
 window.addEventListener("keydown", (event) => {
     if (event.code === "KeyP" && !isOver) {
