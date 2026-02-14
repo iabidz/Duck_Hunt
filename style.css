@@ -1,0 +1,181 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    cursor: url('target.png') 16 16, auto;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #40BFFE; 
+    
+}
+
+
+.back {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 50;         
+    pointer-events: none;
+}
+
+
+#score, #round, #pause, .dog {
+    position: relative; 
+    z-index: 1;         
+}
+
+
+#score {
+    font-size:2.5vw ;
+    color: white;
+    position: fixed;
+    top: 87%;
+    left: 75vw;
+    z-index: 60;
+}
+
+
+#round {
+    font-size: 30px;
+    color: greenyellow;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+
+#pause {
+    background: none;
+    font-size: larger;
+    color: white;
+    border: 2px solid white;
+    padding: 5px;
+    border-radius: 5px;
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+.dog {
+    position: fixed;
+    bottom: 23vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 160px;
+    z-index: 80;    
+}
+
+
+.bullet {
+    width: 3vw;
+    height: 30px;
+   
+
+}
+
+#bull {
+  
+    position: absolute;
+    top: 87%;
+    z-index: 60;
+    left: 9.5%;
+}
+
+#round{
+
+
+    position: absolute;
+    top: 79.8%;
+    z-index: 60;
+    left:10vw;
+}
+
+/* ===== GAME OVER SCREEN ===== */
+
+#gameover-overlay {
+    position: fixed;
+    
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.gameover-box {
+    width: 30vw;
+    margin-left: 35vw;
+    background: #000000;
+    padding: 20px 10%;
+    border: 4px solid rgb(0, 255, 13) ;
+    text-align: center;
+    animation: fadeInScale 0.5s ease;
+    
+}
+
+.gameover-box h1 {
+    font-size: 200%;
+    color: #ff3c3c;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+}
+
+.gameover-box p {
+    font-size: 200%;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.gameover-box button{
+    padding: 2% 5%;
+    font-size: 18px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#restart-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Animation */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+@media (max-width: 600px) {
+
+    .gameover-box {
+        padding: 25px;
+        width: 90%;
+    }
+
+    .gameover-box h1 {
+        font-size: 40px;
+    }
+
+    .gameover-box p {
+        font-size: 18px;
+    }
+}
