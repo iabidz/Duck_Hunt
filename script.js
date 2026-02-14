@@ -13,6 +13,9 @@ let bullet = 3;
 let hoveredDuck;
 let isPaused = false;
 let isOver = false
+const shootSound = new Audio("audio/duck-shot.mp3");
+shootSound.preload = "auto";
+
 let pause = document.getElementById('pause');
 pause.addEventListener('click', () => {
     if (!isOver) {
@@ -34,7 +37,8 @@ window.addEventListener("keydown", (event) => {
 
     if (event.code === "Space") {
         if (bullet !== 0) {
-            new Audio("audio/duck-shot.mp3").play();
+            shootSound.currentTime = 0;
+            shootSound.play();
             let divcontainer = document.getElementById('bull');
             if (divcontainer.firstChild) {
                 divcontainer.removeChild(divcontainer.firstChild);
@@ -71,7 +75,9 @@ function shoot(x, y) {
         gameover();
         return;
     }
-    new Audio("duck-shot.mp3").play();
+    shootSound.currentTime = 0;
+    shootSound.play();
+    vibrateShort()
     if (navigator.vibrate) {
         navigator.vibrate(100);
     }
@@ -100,6 +106,12 @@ function shoot(x, y) {
         }
     }
 }
+function vibrateShort() {
+    if ("vibrate" in navigator) {
+        navigator.vibrate([50, 30, 100]);
+    }
+}
+
 
 function randomPosition(max) {
     return Math.floor(Math.random() * max);
@@ -207,7 +219,7 @@ function adddog() {
 }
 
 function gameLoop() {
-    if (!isPaused || isOver) update();
+    if (!isPaused && !isOver) update();
     requestAnimationFrame(gameLoop);
 }
 
