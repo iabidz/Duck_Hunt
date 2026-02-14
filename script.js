@@ -12,40 +12,18 @@ let Round = 1;
 let bullet = 3;
 let hoveredDuck;
 let isPaused = false;
-let isOver=false
+let isOver = false
 let pause = document.getElementById('pause');
 pause.addEventListener('click', () => {
-    if(!isOver){
+    if (!isOver) {
         isPaused = !isPaused;
         pause.innerText = isPaused ? "Continue" : "Pause";
 
     }
 });
-window.addEventListener("click",()=>{
-    if (bullet !== 0) {
-            new Audio("audio/duck-shot.mp3").play();
-            let divcontainer = document.getElementById('bull');
-            if (divcontainer.firstChild) {
-                divcontainer.removeChild(divcontainer.firstChild);
-                bullet--;
-            }
-            if (hoveredDuck) {
-                score++;
-                document.getElementById("score").innerText = score * 100 + " score";
-                hoveredDuck.img.src = 'img/1.png';
-                let fallingdownAnimation = hoveredDuck;
-                requestAnimationFrame(() => fallDown(fallingdownAnimation));
-                ducks = ducks.filter(d => d !== hoveredDuck);
-                hoveredDuck = null;
-                if (ducks.length === 0) setTimeout(adddog, 1500);
-            }
-        } else if (bullet <= 0) {
-            console.log('No bullets left!');
-            if (!isOver &&ducks.length)gameover()
-            return
-
-        }
-})
+window.addEventListener("pointerdown", (event) => {
+    shoot(event.clientX, event.clientY);
+});
 
 window.addEventListener("keydown", (event) => {
     if (event.code === "KeyP" && !isOver) {
@@ -74,7 +52,7 @@ window.addEventListener("keydown", (event) => {
             }
         } else if (bullet <= 0) {
             console.log('No bullets left!');
-            if (!isOver &&ducks.length)gameover()
+            if (!isOver && ducks.length) gameover()
             return
 
         }
@@ -85,6 +63,43 @@ window.addEventListener("resize", () => {
     gameHeight = window.innerHeight;
 });
 
+function shoot(x, y) {
+
+    if (isPaused) return;
+
+    if (bullet <= 0) {
+        gameover();
+        return;
+    }
+    new Audio("duck-shot.mp3").play();
+    if (navigator.vibrate) {
+        navigator.vibrate(100);
+    }
+    let divcontainer = document.getElementById('bull');
+    if (divcontainer.firstChild) {
+        divcontainer.removeChild(divcontainer.firstChild);
+        bullet--;
+    }
+    for (let duck of ducks) {
+        let rect = duck.img.getBoundingClientRect();
+        if (
+            x >= rect.left &&
+            x <= rect.right &&
+            y >= rect.top &&
+            y <= rect.bottom
+        ) {
+            score++;
+            document.getElementById("score").innerText =
+                score * 100 + " score";
+            duck.img.src = '1.png';
+            requestAnimationFrame(() => fallDown(duck));
+            ducks = ducks.filter(d => d !== duck);
+            if (ducks.length === 0)
+                setTimeout(adddog, 1500);
+            break;
+        }
+    }
+}
 
 function randomPosition(max) {
     return Math.floor(Math.random() * max);
@@ -192,7 +207,7 @@ function adddog() {
 }
 
 function gameLoop() {
-    if (!isPaused   || isOver) update();
+    if (!isPaused || isOver) update();
     requestAnimationFrame(gameLoop);
 }
 
@@ -202,7 +217,7 @@ function update() {
 
 function gameover() {
     isPaused = true;
-    isOver=true
+    isOver = true
     let over = document.createElement("div");
     over.id = "gameover";
     over.innerHTML = `
@@ -217,25 +232,25 @@ function gameover() {
 
 
 
-        
+
     document.getElementById("restart-btn")
         .addEventListener("click", () => {
             console.log('hi');
-            
+
             location.reload();
         });
 }
 
-// khasni nzid dik blan dyal batat 
+// khasni nzid dik blan dyal batat
 
-// w ndir time w imta kaykhsr l3ab 
+// w ndir time w imta kaykhsr l3ab
 
 
 //khasni n9ad chwiya style
 
-//nzid music 
+//nzid music
 
-// ndir Animation dyal lkalb + ndidr lbata lhamra (ikhtiyari) 
+// ndir Animation dyal lkalb + ndidr lbata lhamra (ikhtiyari)
 
-// ilyas: *khas n9ad gameover 
+// ilyas: *khas n9ad gameover
 //        *ou n9ad stayl ou responsibl nta3 telefoun    
